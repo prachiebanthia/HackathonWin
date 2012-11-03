@@ -92,6 +92,7 @@ public class ProfessorReader {
 		for(Professor p : profs){
 			p.writeResult(out);
 		}
+		out.close();
 	}
 	
 	// only used for testing. should go away later

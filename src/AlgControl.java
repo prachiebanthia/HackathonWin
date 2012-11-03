@@ -88,11 +88,12 @@ public class AlgControl {
 		}
 		try{
 			ProfessorReader prof = new ProfessorReader(args[0]);
-			StudentReader students = new StudentReader(args[1]);
+			StudentReader students = new StudentReader(args[1], prof.getNameSet());
 			AlgControl ac = new AlgControl(students, prof);
 			ac.assignClasses();
 			prof.writeResult(args[2]);
 			students.writeResult(args[3]);
+			System.out.println("Terminated successfully.");
 		}catch(IOException e){
 			error("IO Exception; exiting.");
 		}

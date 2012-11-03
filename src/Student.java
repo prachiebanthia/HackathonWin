@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Random;
 
 // text file syntax for a student file
 // <unique text identifier>
@@ -15,11 +16,17 @@ public class Student {
 	private Set<String> classesBought;
 	private String id;
 	
+	private static Random rGen = new Random();
+	
 	public Student(List<Pair<String,Double>> vList, String id) {
 		this.votesList = vList;
 		Collections.sort(votesList, new PairComparator());
 		classesBought = new HashSet<String>();
 		this.id = id;
+		this.votesLeft = 0;
+		for(Pair<String,Double> p : votesList){
+			this.votesLeft += p.getSecond();
+		}
 	}
 
 	// whether this student would like to take another class
@@ -66,6 +73,7 @@ public class Student {
 			return false;
 		}else{
 			classesBought.add(votesList.get(0).getFirst());
+			votesLeft -= votesList.get(0).getSecond();
 			votesList.remove(0);
 			return true;
 		}
@@ -75,15 +83,20 @@ public class Student {
 	// algorithm:
 	// priority = (sum over all classes (|log(votes for/avg votes)| total votes
 	// to class/class size)) * votes left
+	// priority is votesLeft * sum of abs(log(a/b)*c
+	// a = votes for this class
+	// b = avg votes
+	
 	public Double getPriority(Map<String, Double> votesPerSeatMap) {
 		double priority = 0;
 		for (int i = 0; i < votesList.size(); i++) {
-//why?			votesLeft = votesLeft - (Integer) votesList.get(i).getSecond();
 			priority += Math.abs(Math.log(votesList.get(i).getSecond()
 					/ this.avgVotes()))
 					* votesPerSeatMap.get(votesList.get(i).getFirst());
 		}
+		priority += 2; // smoothing 
 		priority = priority * votesLeft;
+		priority += rGen.nextDouble() / 100; // break ties
 		return priority;
 	}
 

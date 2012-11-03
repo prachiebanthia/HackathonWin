@@ -14,11 +14,13 @@ public class StudentReader {
 
 	private List<Student> students;
 	private Set<String> idSeen;
+	private Set<String> validCNames;
 	
 	
-	public StudentReader(String dirName) throws FileNotFoundException{
+	public StudentReader(String dirName, Set<String> validCNames) throws FileNotFoundException{
 		this.students = new ArrayList<Student>();
 		this.idSeen = new HashSet<String>();
+		this.validCNames = validCNames;
 		File studentDir = new File(dirName);
 		if(!studentDir.isDirectory()){
 			AlgControl.error("Illegal student file directory argument");
@@ -55,13 +57,15 @@ public class StudentReader {
 		}
 		List<Pair<String,Double>> votesList = new ArrayList<Pair<String,Double>>();
 		Set<String> cNameSet = new HashSet<String>();
-		while(scan.hasNextLine()){
+		while(scan.hasNextLine() && scan.hasNext()){
 			String cName = scan.next();
 			if(cName.charAt(0) == '#'){
 				continue;
 			}
 			if(cNameSet.contains(cName)){
 				AlgControl.error("Duplicate class name in student " + id);
+			}else if(!validCNames.contains(cName)){
+				AlgControl.error("The class " + cName + " is not offered by any professor.");
 			}else{
 				cNameSet.add(cName);
 			}
@@ -78,6 +82,7 @@ public class StudentReader {
 		for(Student p : students){
 			p.writeResult(out);
 		}
+		out.close();
 	}
 	
 }
