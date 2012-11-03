@@ -5,10 +5,10 @@ import java.util.Map;
 
 public class Student {
 
-	private LinkedList<Pair> al; // pairs are classname, votes
+	private List<Pair> al; // pairs are classname, votes
 	private int votesLeft;
 
-	public Student(LinkedList<Pair> al) {
+	public Student(List<Pair> al) {
 		this.al = al;
 	}
 
@@ -16,7 +16,6 @@ public class Student {
 	// algorithm:
 	// priority = (sum over all classes (|log(votes for/avg votes)| total votes
 	// to class/class size)) * votes left
-	
 	public Double getPriority(Map<String, Double> profMap) {
 		double priority = 0;
 		for (int i = 0; i < al.size(); i++) {
@@ -26,9 +25,7 @@ public class Student {
 					* profMap.get(al.get(i).getFirst());
 		}
 		priority = priority * votesLeft;
-
 		return priority;
-
 	}
 
 	//returns average votes that the student has left relative to the number of classes 
@@ -46,7 +43,7 @@ public class Student {
 	}
 
 	//returns list of classes and priorities
-	public LinkedList<Pair> getAl() {
+	public List<Pair> getAl() {
 		return al;
 	}
 
