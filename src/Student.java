@@ -1,12 +1,14 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class Student {
 
-	private ArrayList<Pair> al;
+	private LinkedList<Pair> al;
 	private int votesLeft;
 	
-	public Student(ArrayList<Pair> al){
+	public Student(LinkedList<Pair> al){
 		this.al = al;
 	}
 
@@ -32,7 +34,7 @@ public class Student {
 		return (double) (total / al.size());
 	}
 
-	public ArrayList<Pair> getAl(){
+	public LinkedList<Pair> getAl(){
 		return al;
 	}
 	
