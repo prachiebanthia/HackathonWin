@@ -1,5 +1,7 @@
 import java.util.Comparator;
 
+// Orders two pairs by the second argument
+// Second argument must allow a cast to Double
 public class PairComparator implements Comparator<Pair> {
 
 	@Override

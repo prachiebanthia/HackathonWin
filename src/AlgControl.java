@@ -1,49 +1,53 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class AlgControl {
-	public ArrayList<Student> students;
+	public List<Student> students;
 	public ProfessorReader prof;
 
 	//assigns each student to as many classes as we can
 	//using the student's priority and fitting them into
 	//classes as possible
 	public void assignClasses() {
-		Map<String, Double> profMap = this.computeVPSMap();
-		ArrayList<Pair> studprior = new ArrayList<Pair>(); //array of students with their difficulty level
+		Map<String, Double> profMap; // map of class to votes per seat
+		List<Pair<Student,Double>> studentPriorities;  //array of students with their priority level
 		boolean isChanged = true; //check if we've changed anything
 		while (isChanged) {
+			profMap = this.computeVPSMap();
 			isChanged = false;
+			//compute priorities for each student
+			studentPriorities = new ArrayList<Pair<Student,Double>>();
 			for (Student s : students) {
-				studprior.add(new Pair(s, s.getPriority(profMap)));
-			} //compute priorities for each student
+				studentPriorities.add(new Pair<Student,Double>(s, s.getPriority(profMap)));
+			} 
+			Collections.sort(studentPriorities, new PairComparator());
+			//now studentPriorities is ordered by priority
 
-			Collections.sort(studprior, new PairComparator());
-			//now studprior has the sequence of dealing with students
-
-			for (Pair s : studprior) {
-				Student person = (Student) s.getFirst();
-				String className = (String) person.getAl().get(0).getFirst();
-				boolean isAdded = prof.addStudentToClass(className);
-
-				while (!isAdded && person.getAl().get(0).getFirst() != null) {
-					className = (String) person.getAl().get(0).getFirst();
-					isAdded = prof.addStudentToClass(className);
-					person.setVotesLeft(person.getVotesLeft()
-							- (Integer) person.getAl().get(0).getSecond());
-					person.getAl().remove(0);
-				} //find a class we can finally add for the student, and add it if we can
-
-				if (isAdded) {
+			for (Pair<Student,Double> s : studentPriorities) {
+				Student person = s.getFirst();
+				if(!person.wantsAClass()){
+					continue;
+				}
+				boolean isAdded = false;
+				//find a class we can finally add for the student, and add it if we can
+				while (!isAdded && person.wantsAClass()) {
+					String className = person.targetClass();
+					boolean gotClass = prof.addStudentToClass(className);
+					if(gotClass){
+						person.buyBestClass();
+						isAdded = true;
+					}else{
+						person.loseBestClass();
+					}
+				} 
+				if (isAdded) { // if we added a class, the list was changed on this run through
 					isChanged = true;
 				}
 			}
-			
-			// recompute vpc
-			profMap = this.computeVPSMap();
 		}
 	}
 
