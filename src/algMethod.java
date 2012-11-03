@@ -8,6 +8,9 @@ public class algMethod {
 	public ArrayList<Student> students;
 	public ProfessorReader prof;
 
+	//assigns each student to as many classes as we can
+	//using the student's priority and fitting them into
+	//classes as possible
 	public void assignClasses() {
 		// compute vpc table?
 		Map<String, Integer> profMap = null; // get real map
