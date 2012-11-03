@@ -24,6 +24,20 @@ public class Student {
 
 	}
 
+	// Gets the votes for the given class name
+	// votes is either 0 or the votes associated with
+	// the first occurrence of this class name in our list
+	// of pairs, since we assume that we can't have duplicate
+	// preferences.
+	public double getVotesFor(String cName){
+		for(Pair p : al){
+			if(((String)p.getFirst()).equals(cName)){
+				return ((Double)p.getSecond()).doubleValue();
+			}
+		}
+		return 0;
+	}
+	
 	private Double avgVotes() {
 		int total = 0;
 		for (int i = 0; i < al.size(); i++) {

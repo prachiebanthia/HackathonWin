@@ -74,6 +74,10 @@ public class ProfessorReader {
 		return teachMap.get(cName).reduceAvailable(cName);
 	}
 	
+	public Set<String> getNameSet(){
+		return cNameSet;
+	}
+	
 	// only used for testing. should go away later
 	/*
 	public static void main(String[] args){
