@@ -6,9 +6,16 @@ import java.util.Map;
 import java.util.Set;
 
 public class AlgControl {
-	public List<Student> students;
-	public ProfessorReader prof;
+	public StudentReader students;
+	public ProfessorReader profs;
 
+	// create an algorithm control structure
+	public AlgControl(StudentReader students, ProfessorReader prof){
+		this.profs = prof;
+		this.students = students;
+	}
+	
+	
 	//assigns each student to as many classes as we can
 	//using the student's priority and fitting them into
 	//classes as possible
@@ -21,7 +28,7 @@ public class AlgControl {
 			isChanged = false;
 			//compute priorities for each student
 			studentPriorities = new ArrayList<Pair<Student,Double>>();
-			for (Student s : students) {
+			for (Student s : students.getStudentList()) {
 				studentPriorities.add(new Pair<Student,Double>(s, s.getPriority(profMap)));
 			} 
 			Collections.sort(studentPriorities, new PairComparator());
@@ -36,7 +43,7 @@ public class AlgControl {
 				//find a class we can finally add for the student, and add it if we can
 				while (!isAdded && person.wantsAClass()) {
 					String className = person.targetClass();
-					boolean gotClass = prof.addStudentToClass(className);
+					boolean gotClass = profs.addStudentToClass(className);
 					if(gotClass){
 						person.buyBestClass();
 						isAdded = true;
@@ -54,26 +61,23 @@ public class AlgControl {
 	// returns a map from classes to (votes per available seat)
 	private Map<String,Double> computeVPSMap(){
 		Map<String,Double> voteMap = new HashMap<String,Double>();
-		Set<String> cNames = prof.getNameSet();
+		Set<String> cNames = profs.getNameSet();
 		// make a map from classes to total votes
 		for(String cName : cNames){
-			voteMap.put(cName, getTotalVotes(cName));
+			voteMap.put(cName, students.getTotalVotes(cName));
 		}
 		// divide each entry by seats available
-		Map<String,Double> seatMap = prof.getSeatMap();
+		Map<String,Double> seatMap = profs.getSeatMap();
 		for(String cName : cNames){
 			voteMap.put(cName, voteMap.get(cName)/seatMap.get(cName));
 		}
 		return voteMap;
 	}
 
-	// get the total number of votes (across all students)
-	// for the given class
-	private Double getTotalVotes(String cName){
-		double total = 0;
-		for(Student s : students){
-			total += s.getVotesFor(cName);
-		}
-		return total;
+	
+	// intentionally crash with a given error message
+	public static void error(String msg){
+		System.err.println(msg);
+		System.exit(0);
 	}
 }

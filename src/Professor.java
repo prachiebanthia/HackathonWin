@@ -7,15 +7,20 @@ import java.util.Set;
 // A preference is a max # classes,
 // and a map<String,Integer> from classes willing
 // to teach to max # students in that class
+//
+// text file syntax for a professor:
+// <unique string identifier> <max classes> <class spots>*
 public class Professor {
 	private final int maxTaught;
 	private Set<String> classesTaught;
 	Map<String,Integer> seatMap;
+	private String id;
 	
-	public Professor(int maxTaught){
+	public Professor(int maxTaught, String id){
 		this.maxTaught = maxTaught;
 		this.classesTaught = new HashSet<String>();
 		this.seatMap = new HashMap<String,Integer>();
+		this.id = id;
 	}
 	
 	public int getMaxTaught(){

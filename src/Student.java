@@ -9,11 +9,13 @@ public class Student {
 	private List<Pair<String,Double>> votesList; // pairs are classname, votes
 	private double votesLeft;
 	private Set<String> classesBought;
-
-	public Student(List<Pair<String,Double>> vList) {
+	private String id;
+	
+	public Student(List<Pair<String,Double>> vList, String id) {
 		this.votesList = vList;
 		Collections.sort(votesList, new PairComparator());
 		classesBought = new HashSet<String>();
+		this.id = id;
 	}
 
 	// whether this student would like to take another class
@@ -73,7 +75,7 @@ public class Student {
 		double priority = 0;
 		for (int i = 0; i < votesList.size(); i++) {
 //why?			votesLeft = votesLeft - (Integer) votesList.get(i).getSecond();
-			priority += Math.abs(Math.log((Double) votesList.get(i).getSecond()
+			priority += Math.abs(Math.log(votesList.get(i).getSecond()
 					/ this.avgVotes()))
 					* votesPerSeatMap.get(votesList.get(i).getFirst());
 		}
@@ -83,7 +85,7 @@ public class Student {
 
 	// returns average votes that the student has left relative to 
 	// the number of classes they have given positive votes to
-	private Double avgVotes() {
+	private double avgVotes() {
 		int total = 0;
 		int numClasses = 0;
 		for (int i = 0; i < votesList.size(); i++) {

@@ -15,11 +15,13 @@ public class ProfessorReader {
 	List<Professor> profs;
 	Set<String> cNameSet;
 	Map<String,Professor> teachMap;
+	Set<String> profIdSet;
 	
 	public ProfessorReader(String inFileName) throws FileNotFoundException{
 		this.profs = new ArrayList<Professor>();
 		this.cNameSet = new HashSet<String>();
 		this.teachMap = new HashMap<String,Professor>();
+		this.profIdSet = new HashSet<String>();
 		Scanner scan = new Scanner(new File(inFileName));
 		while(scan.hasNextLine()){
 			String nextLine = scan.nextLine();
@@ -32,23 +34,22 @@ public class ProfessorReader {
 		scan.close();
 	}
 	
-	
-	// intentionally crash with a given error message
-	public static void error(String msg){
-		System.err.println(msg);
-		System.exit(0);
-	}
-	
 	// private method reads a string of input
 	// and returns the professor corresponding to that string
 	private Professor readProf(String info){
 		Scanner scan = new Scanner(info);
+		String id = scan.next();
+		if(profIdSet.contains(id)){
+			AlgControl.error("Duplicate professor id: " + id);
+		}else{
+			profIdSet.add(id);
+		}
 		int maxTaught = scan.nextInt();
-		Professor newProf = new Professor(maxTaught);
+		Professor newProf = new Professor(maxTaught, id);
 		while(scan.hasNext()){
 			String cName = scan.next();
 			if(cNameSet.contains(cName)){
-				error("Duplicate class name: " + cName);
+				AlgControl.error("Duplicate class name: " + cName);
 			}else{
 				cNameSet.add(cName);
 				teachMap.put(cName, newProf);
