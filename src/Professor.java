@@ -1,3 +1,4 @@
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -84,5 +85,9 @@ public class Professor {
 		s += seatMap.toString();
 		s += "\n";
 		return s;
+	}
+	
+	public void writeResult(PrintWriter p){
+		p.println(id + ": " + classesTaught);
 	}
 }

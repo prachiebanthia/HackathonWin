@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,6 +57,9 @@ public class StudentReader {
 		Set<String> cNameSet = new HashSet<String>();
 		while(scan.hasNextLine()){
 			String cName = scan.next();
+			if(cName.charAt(0) == '#'){
+				continue;
+			}
 			if(cNameSet.contains(cName)){
 				AlgControl.error("Duplicate class name in student " + id);
 			}else{
@@ -63,6 +69,15 @@ public class StudentReader {
 			votesList.add(new Pair<String,Double>(cName,votes));
 		}
 		return new Student(votesList,id);
+	}
+	
+	public void writeResult(String outFileName) throws IOException{
+		File outFile = new File(outFileName);
+		PrintWriter out = new PrintWriter(new FileWriter(outFile));
+		out.println("Student assigned classes:");
+		for(Student p : students){
+			p.writeResult(out);
+		}
 	}
 	
 }

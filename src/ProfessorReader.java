@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -72,11 +75,23 @@ public class ProfessorReader {
 	}
 	
 	public boolean addStudentToClass(String cName){
+		if(!teachMap.containsKey(cName)){
+			return false;
+		}
 		return teachMap.get(cName).reduceAvailable(cName);
 	}
 	
 	public Set<String> getNameSet(){
 		return cNameSet;
+	}
+	
+	public void writeResult(String outFileName) throws IOException{
+		File outFile = new File(outFileName);
+		PrintWriter out = new PrintWriter(new FileWriter(outFile));
+		out.println("Professor taught classes:");
+		for(Professor p : profs){
+			p.writeResult(out);
+		}
 	}
 	
 	// only used for testing. should go away later

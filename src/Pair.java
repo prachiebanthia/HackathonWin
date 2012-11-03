@@ -16,7 +16,7 @@ public class Pair<S,T> {
   public boolean equals(Object obj) {
     if( ! (obj instanceof Pair))
       return false;
-    Pair p = (Pair)obj;
+    Pair<S,T> p = (Pair<S,T>)obj;
     return same(p.o1, this.o1) && same(p.o2, this.o2);
   }
  

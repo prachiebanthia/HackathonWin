@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -80,4 +81,21 @@ public class AlgControl {
 		System.err.println(msg);
 		System.exit(0);
 	}
+	
+	public static void main(String[] args){
+		if(args.length != 4){
+			error("Usage: java AlgControl <teacherFile> <studentDirectory> <teacherOutFile> <studentOutFile>");
+		}
+		try{
+			ProfessorReader prof = new ProfessorReader(args[0]);
+			StudentReader students = new StudentReader(args[1]);
+			AlgControl ac = new AlgControl(students, prof);
+			ac.assignClasses();
+			prof.writeResult(args[2]);
+			students.writeResult(args[3]);
+		}catch(IOException e){
+			error("IO Exception; exiting.");
+		}
+	}
+	
 }

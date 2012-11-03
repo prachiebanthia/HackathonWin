@@ -1,9 +1,13 @@
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+// text file syntax for a student file
+// <unique text identifier>
+// <className votes \n>*
 public class Student {
 
 	private List<Pair<String,Double>> votesList; // pairs are classname, votes
@@ -124,6 +128,10 @@ public class Student {
 			}
 		}
 		return 0;
+	}
+	
+	public void writeResult(PrintWriter out){
+		out.println(id + ": " + classesBought);
 	}
 
 }
