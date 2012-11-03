@@ -24,9 +24,9 @@ public class ProfessorReader {
 		while(scan.hasNextLine()){
 			String nextLine = scan.nextLine();
 			if(nextLine.charAt(0) == '#'){
-				
+				continue;
 			}
-			Professor nextProf = readProf(scan.nextLine());
+			Professor nextProf = readProf(nextLine);
 			profs.add(nextProf);
 		}
 		scan.close();
@@ -71,6 +71,18 @@ public class ProfessorReader {
 	}
 	
 	public boolean addStudentToClass(String cName){
-		return teachMap.get(cName).reduceAvailalbe(cName);
+		return teachMap.get(cName).reduceAvailable(cName);
 	}
+	
+	// only used for testing. should go away later
+	/*
+	public static void main(String[] args){
+		try {
+			ProfessorReader pr = new ProfessorReader("ProfTest.txt");
+			System.out.println(pr.getSeatMap());
+		} catch (FileNotFoundException e) {
+			System.err.println("FNF exception :(");
+		}
+	}
+	*/
 }

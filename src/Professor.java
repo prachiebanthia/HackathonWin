@@ -45,7 +45,7 @@ public class Professor {
 		return false;
 	}
 	
-	public boolean reduceAvailalbe(String name){
+	public boolean reduceAvailable(String name){
 		if(!tryToTeach(name)){
 			return false;
 		}
@@ -70,5 +70,14 @@ public class Professor {
 			}
 		}
 		return sMapValid;
+	}
+	
+	public String toString(){
+		String s = "Prof with max classes " + maxTaught + " and currently teaching ";
+		s += classesTaught.toString();
+		s += " and with seatMap ";
+		s += seatMap.toString();
+		s += "\n";
+		return s;
 	}
 }
