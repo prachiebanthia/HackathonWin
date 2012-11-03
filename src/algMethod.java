@@ -19,7 +19,8 @@ public class algMethod {
 	
 	for (Pair s : studprior){
 		Student person = (Student) s.getFirst();
-		person.getAl();
+		person.getAl().get(0);
+		
 	}
 	}
 	
