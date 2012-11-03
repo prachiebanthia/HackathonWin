@@ -10,12 +10,12 @@ import java.util.Set;
 public class Professor {
 	private final int maxTaught;
 	private Set<String> classesTaught;
-	Map<String,Integer> possClasses;
+	Map<String,Integer> seatMap;
 	
 	public Professor(int maxTaught){
 		this.maxTaught = maxTaught;
 		this.classesTaught = new HashSet<String>();
-		this.possClasses = new HashMap<String,Integer>();
+		this.seatMap = new HashMap<String,Integer>();
 	}
 	
 	public int getMaxTaught(){
@@ -23,8 +23,8 @@ public class Professor {
 	}
 	
 	public boolean addClass(String name, int max){
-		if(!possClasses.containsKey(name)){
-			possClasses.put(name, max);
+		if(!seatMap.containsKey(name)){
+			seatMap.put(name, max);
 			return true;
 		}
 		return false;
@@ -49,12 +49,26 @@ public class Professor {
 		if(!tryToTeach(name)){
 			return false;
 		}
-		if(possClasses.containsKey(name)){
-			if(possClasses.get(name) > 0){
-				possClasses.put(name,possClasses.get(name)-1);
+		if(seatMap.containsKey(name)){
+			if(seatMap.get(name) > 0){
+				seatMap.put(name,seatMap.get(name)-1);
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public Map<String,Double> getSeatMap(){
+		Map<String,Double> sMapValid = new HashMap<String,Double>();
+		if(classesTaught.size() >= maxTaught){
+			for(String cName : classesTaught){
+				sMapValid.put(cName, new Double(seatMap.get(cName)));
+			}
+		}else{
+			for(String cName : seatMap.keySet()){
+				sMapValid.put(cName, new Double(seatMap.get(cName)));
+			}
+		}
+		return sMapValid;
 	}
 }
