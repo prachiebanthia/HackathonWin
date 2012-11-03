@@ -11,18 +11,19 @@ public class algMethod {
 	//assigns each student to as many classes as we can
 	//using the student's priority and fitting them into
 	//classes as possible
+	
 	public void assignClasses() {
-		// compute vpc table?
-		Map<String, Integer> profMap = null; // get real map
-		ArrayList<Pair> studprior = new ArrayList<Pair>();
-		boolean isChanged = true;
+		Map<String, Double> profMap = this.computeVPSMap();
+		ArrayList<Pair> studprior = new ArrayList<Pair>(); //array of students with their difficulty level
+		boolean isChanged = true; //check if we've changed anything
 		while (isChanged) {
 			isChanged = false;
 			for (Student s : students) {
 				studprior.add(new Pair(s, s.getPriority(profMap)));
-			}
+			} //compute priorities for each student
 
 			Collections.sort(studprior, new PairComparator());
+			//now studprior has the sequence of dealing with students
 
 			for (Pair s : studprior) {
 				Student person = (Student) s.getFirst();
@@ -35,13 +36,14 @@ public class algMethod {
 					person.setVotesLeft(person.getVotesLeft()
 							- (Integer) person.getAl().get(0).getSecond());
 					person.getAl().removeFirst();
-				}
+				} //find a class we can finally add for the student, and add it if we can
 
 				if (isAdded) {
 					isChanged = true;
 				}
 			}
 
+			profMap = this.computeVPSMap();
 			// recompute vpc
 
 		}
